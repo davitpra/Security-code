@@ -6,8 +6,8 @@ import { ClassState } from "./ClassState";
 function App() {
   return (
     <div className="App">
-      <UseState/>
-      <ClassState/>
+      <UseState name ="UseState"/>
+      <ClassState name = "Class State"/>
     </div>
   );
 }
