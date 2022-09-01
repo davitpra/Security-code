@@ -7,9 +7,11 @@ function UseState ({name}) {
         value: "",
         error: false,
         loading: false,
+        deleted: false, 
+        confirmed: false,
     })
 
-    const {value, error, loading } = state
+    const {value, error, loading, deleted, confirmed} = state
 
     // console.log (value)
     
@@ -23,7 +25,9 @@ function UseState ({name}) {
                     setState (
                         {...state,
                         loading: false,
-                        error: false}
+                        error: false,
+                        confirmed: true,
+                        value: ''}
                     )
                 }else {
                     setState (
@@ -38,6 +42,7 @@ function UseState ({name}) {
         console.log("Finishing the effect");
     }, [loading]);
 
+    if (!deleted && !confirmed){
     return (
         <div>
             <h2> Eliminar {name}</h2>
@@ -68,6 +73,44 @@ function UseState ({name}) {
             </button>
         </div>
     )
+    } else if (!deleted && confirmed ){
+        return (
+            <>
+            <p> Pedimos confirmacion. Estas seguro?</p>
+            <button
+                onClick={() => 
+                    setState(
+                        {...state,
+                        deleted: true})}
+            >
+                Si, eliminar
+            </button>
+            <button
+                onClick={() => 
+                    setState(
+                        {...state,
+                        confirmed: false})}
+            >
+                No, me arrepenti 
+            </button>
+            </>
+        )
+    } else {
+        return (
+            <>
+            <p> Eliminado con exito</p>
+            <button
+                onClick={() => 
+                    setState(
+                        {...state,
+                        confirmed: false,
+                        deleted: false,})}
+            >
+                Resetear, volver atras 
+            </button>
+            </>
+        )
+    }
 }
 
 export {UseState}
