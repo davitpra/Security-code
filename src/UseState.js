@@ -13,14 +13,16 @@ function UseState ({name}) {
         console.log("Starting the effect");
     
         if(!!loading) {
+            setError (false)
             setTimeout(() => {
                 console.log("Doing the validation");
-        if (value !== SECURITY_CODE){
-            setError (true)
-        }
-        setLoading (false)
-        
-            console.log("Finishing the validation");
+                if (value === SECURITY_CODE){
+                    setLoading(false);
+                }else {
+                    setError (true)
+                    setLoading (false)
+                }
+                console.log("Finishing the validation");
             }, 3000);
         }
     
@@ -31,7 +33,7 @@ function UseState ({name}) {
         <div>
             <h2> Eliminar {name}</h2>
             <p>Por favor, escribe el codigo de seguridad.</p>
-            { error && (
+            { (error&& !loading) && (
                 <p>El código es es incorrecto</p>)}
             {loading && (
                 <p>Loading...</p>)}
@@ -39,11 +41,14 @@ function UseState ({name}) {
                 placeholder="codigo de seguridad"
                 value= {value}
                 onChange = {(event) => {
+                    // setError (false) // este no es muy correcto                    
                     setValue (event.target.value)
                 }}
             />
             <button
-                onClick={() => setLoading(true)}
+                onClick={() =>{ 
+                    // setError (false) // este fue
+                    setLoading(true)}}
             >
                 Comprobar
             </button>
