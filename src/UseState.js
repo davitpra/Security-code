@@ -3,28 +3,36 @@ import React from "react";
 const SECURITY_CODE = "paradigma"
 
 function UseState ({name}) {
-    const [value, setValue] = React.useState('');
-    const [error, setError] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
+    const [state,setState] = React.useState ({
+        value: "",
+        error: false,
+        loading: false,
+    })
 
-    console.log (value)
+    const {value, error, loading } = state
+
+    // console.log (value)
     
     React.useEffect(() => {
         console.log("Starting the effect");
     
         if(!!loading) {
-            //aqui se pone el error en negativo. 
-            setError (false)
             setTimeout(() => {
                 console.log("Doing the validation");
                 if (value === SECURITY_CODE){
-                    setLoading(false);
+                    setState (
+                        {...state,
+                        loading: false,
+                        error: false}
+                    )
                 }else {
-                    setError (true)
-                    setLoading (false)
+                    setState (
+                        {...state,
+                        error: true,
+                        loading: false,})
                 }
                 console.log("Finishing the validation");
-            }, 3000);
+            }, 1000)
         }
     
         console.log("Finishing the effect");
@@ -43,14 +51,18 @@ function UseState ({name}) {
                 placeholder="codigo de seguridad"
                 value= {value}
                 onChange = {(event) => {
-                    // setError (false) // este no es muy correcto                    
-                    setValue (event.target.value)
+                    // setError (false) // este no es muy correcto   
+                    setState (
+                        {...state,
+                        value: event.target.value,})
                 }}
             />
             <button
                 onClick={() =>{ 
                     // setError (false) // este fue
-                    setLoading(true)}}
+                    setState (
+                        {...state,
+                        loading: true,})}}
             >
                 Comprobar
             </button>
